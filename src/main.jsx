@@ -9,6 +9,12 @@ import Root from './layout/Root.jsx';
 import Home from './components/Home/Home.jsx';
 import Register from './components/Register/Register.jsx';
 import Login from './components/Login/Login.jsx';
+import AuthProvider from './contexts/AuthContext/AuthProvider.jsx';
+import Orders from './components/Orders/Orders.jsx';
+import PrivateRoute from './Routes/PrivateRoute.jsx';
+import Profile from './components/Profile/Profile.jsx';
+import Dashboard from './components/Dashboard/Dashboard.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -29,6 +35,19 @@ const router = createBrowserRouter([
       {
         path: 'login',
         Component: Login
+      },
+
+      {
+        path: 'orders',
+        element: <PrivateRoute><Orders></Orders></PrivateRoute>
+      },
+      {
+        path: 'profile',
+        element: <PrivateRoute><Profile></Profile></PrivateRoute>
+      },
+      {
+        path: 'dashboard',
+        element: <PrivateRoute><Dashboard></Dashboard></PrivateRoute>
       }
     ]
   }
@@ -36,6 +55,9 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <AuthProvider>
+      <RouterProvider router={router}></RouterProvider> 
+    </AuthProvider>
+   
   </StrictMode>,
 )

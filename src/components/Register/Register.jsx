@@ -1,38 +1,59 @@
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import React, { useState } from 'react';
+// import { createUserWithEmailAndPassword } from 'firebase/auth';
+import React, { use, useState } from 'react';
 import { Link } from 'react-router';
-import { auth } from '../../firebase/firebase.init';
+// import { auth } from '../../firebase/firebase.init';
+import { AuthContext } from '../../contexts/AuthContext/AuthContext';
 
 const Register = () => {
 
-    const [error, setError] = useState('')
-    const [success, setSuccess] = useState('')
+    const { createUser } = use(AuthContext)
 
-    const handleRegisterSubmit = (e) => {
-        e.preventDefault();
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        console.log(email,password)
 
-        setError('')
-        setSuccess('')
+    // const [error, setError] = useState('')
+    // const [success, setSuccess] = useState('')
 
-        createUserWithEmailAndPassword(auth,email,password)
-        .then(result => {
-            console.log(result.user);
-            setSuccess('Account created successfully')
-        })
-        .catch(error => {
-            setError(error.message)
-        })
+    const handleRegisterProvider = (event) => {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+
+        createUser(email, password)
+            .then(result => {
+                console.log(result.user);
+            })
+            .catch(error => {
+                console.log(error)
+            })
     }
+
+    // const handleRegisterSubmit = (e) => {
+    //     e.preventDefault();
+    //     const email = e.target.email.value;
+    //     const password = e.target.password.value;
+    //     console.log(email,password)
+
+    //     setError('')
+    //     setSuccess('')
+
+    //     createUserWithEmailAndPassword(auth,email,password)
+    //     .then(result => {
+    //         console.log(result.user);
+    //         setSuccess('Account created successfully')
+    //     })
+    //     .catch(error => {
+    //         setError(error.message)
+    //     })
+    // }
     return (
 
         <div className="card bg-base-100 w-full mx-auto mt-5 max-w-sm shrink-0 shadow-2xl">
             <div className="card-body">
                 <h1 className="text-3xl font-bold">Register now!</h1>
-                <form onSubmit={handleRegisterSubmit}>
+                <form onSubmit={handleRegisterProvider}>
                     <fieldset className="fieldset">
+                        {/* Name field */}
+                        <label className="label">Name</label>
+                        <input type="text" name="name" className="input" placeholder="Your Name" />
                         {/* Email field */}
                         <label className="label">Email</label>
                         <input type="email" name="email" className="input" placeholder="Email" />
@@ -44,14 +65,14 @@ const Register = () => {
                     </fieldset>
                 </form>
 
-                {
+                {/* {
                     success && <p className='text-xl text-emerald-500'>{success}</p>
-                }
+                } */}
 
-                {
+                {/* {
                     error && <p>{error}</p>
-                }
-                <p>Already have an account? Please <Link to='/login' className='text-blue-600 underline'>Login</Link> </p>
+                } */}
+                <p>Already have an account? Please <Link to='/login' className='text-blue-600 underline hover:text-blue-800 '>Login</Link> </p>
             </div>
         </div>
 

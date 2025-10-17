@@ -1,23 +1,42 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import React from 'react';
+// import { signInWithEmailAndPassword } from 'firebase/auth';
+import React, { use } from 'react';
 import { Link } from 'react-router';
-import { auth } from '../../firebase/firebase.init';
+import { AuthContext } from '../../contexts/AuthContext/AuthContext';
+// import { auth } from '../../firebase/firebase.init';
 
 const Login = () => {
-    const handleLoginSubmit = (e) => {
-        e.preventDefault()
-        const email = e.target.email.value;
-        const password = e.target.password.value;
-        console.log(email,password)
 
-        signInWithEmailAndPassword(auth,email,password)
-        .then(result => {
-            console.log(result.user)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+    const { signInUser } = use(AuthContext)
+
+    const handleLoginSubmit = (event) => {
+        event.preventDefault();
+        const email = event.target.email.value;
+        const password = event.target.password.value;
+
+        signInUser(email, password)
+            .then(result => {
+                console.log(result.user);
+                // event.target.reset();
+            })
+            .catch(error => {
+                console.log(error);
+            })
     }
+
+    // const handleLoginSubmit = (e) => {
+    //     e.preventDefault()
+    //     const email = e.target.email.value;
+    //     const password = e.target.password.value;
+    //     console.log(email,password)
+
+    //     signInWithEmailAndPassword(auth,email,password)
+    //     .then(result => {
+    //         console.log(result.user)
+    //     })
+    //     .catch(error => {
+    //         console.log(error)
+    //     })
+    // }
 
     return (
         <div className="card bg-base-100 w-full mx-auto mt-5 max-w-sm shrink-0 shadow-2xl">
